@@ -41,7 +41,7 @@ int main(int argc, char const *argv[])
     mq_close(mq);
 
     }
-    else if (pid > 0){
+    else if (pid > 0){ //unfinished
     wait(NULL);
     char buf[MAX_SIZE];
     mqd_t mq = mq_open(my_mq, O_RDONLY);
@@ -50,15 +50,13 @@ int main(int argc, char const *argv[])
     mq_close(mq);
     mq_unlink(my_mq);
 
-    char *token = strtok(buf, " ");
+    char *test = strtok(buf, " ");
     int i = 0;
-    while (token != NULL)
+    while (test != NULL)
     {
          i++;
-        token = strtok(NULL, " ");
     }
 
-    // count words in rcv
     printf("%d\n", i);
 
     }
