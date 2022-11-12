@@ -6,9 +6,6 @@
 #include <string.h> //for strtok
 #include <sys/stat.h>
 
-
-
-
 int main(int argc, char const *argv[])
 {
     int MAX_SIZE = 512;
