@@ -34,7 +34,7 @@ int main(int argc, char const *argv[])
     FILE *file;
     file = fopen("test.txt", "r");
     if (file == NULL){
-    perror("No file found");
+        perror("No file found");
     }
     fgets(buf, MAX_SIZE, file);
     mqd_t mq = mq_open(my_mq, O_WRONLY);
@@ -61,7 +61,7 @@ int main(int argc, char const *argv[])
 
     while (token != NULL)
     {
-         count++;
+        count++;
         token = strtok(NULL, " ");
     }
 
