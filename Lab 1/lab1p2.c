@@ -6,10 +6,13 @@
 #include <string.h> //for strtok
 #include <sys/stat.h>
 
+
+
+
 int main(int argc, char const *argv[])
 {
-    int MAX_SIZE = 512;
-    int MAX_NUM_MSG = 5;
+    int MAX_SIZE = 100;
+    int MAX_NUM_MSG = 10;
     char *my_mq = "/mymq";
 
     struct mq_attr attr;
@@ -37,11 +40,12 @@ int main(int argc, char const *argv[])
     perror("No file found");
     }
     fgets(buf, MAX_SIZE, file);
-    mqd_t mq = mq_open(my_mq, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH, &attr);
-            
+    mqd_t mq = mq_open(my_mq, O_WRONLY);
+
     mq_send(mq, buf, strlen(buf), 0);
 
     mq_close(mq);
+    
     }
 
 
@@ -68,4 +72,6 @@ int main(int argc, char const *argv[])
 
     }
     mq_unlink(my_mq);
+
+
 }
