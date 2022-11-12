@@ -2,14 +2,18 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
-#include <string.h>
 #include <mqueue.h>
-    const int MAX_SIZE = 1024;
-    const int MAX_NUM_MSG = 10;
-    const char *my_mq = "/mymq";
+#include <string.h> //for strtok
+#include <sys/stat.h>
+
+
+
 
 int main(int argc, char const *argv[])
 {
+    int MAX_SIZE = 512;
+    int MAX_NUM_MSG = 5;
+    char *my_mq = "/mymq";
 
     struct mq_attr attr;
     attr.mq_maxmsg = MAX_NUM_MSG;
@@ -23,45 +27,48 @@ int main(int argc, char const *argv[])
         perror("fork error \n");
         exit(1);
     }
-    if (pid == 0) // Child test
+
+    
+
+    if (pid == 0) // Child (Send)
     {
     char buf[MAX_SIZE];
 
     FILE *file;
     file = fopen("test.txt", "r");
     if (file == NULL){
-    perror("No file \n");
+    perror("No file found");
     }
-
-
     fgets(buf, MAX_SIZE, file);
-    mqd_t mq = mq_open(my_mq, O_CREAT | O_WRONLY, (S_IRUSR | S_IWUSR), &attr);
+    mqd_t mq = mq_open(my_mq, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH, &attr);
             
     mq_send(mq, buf, strlen(buf), 0);
-    mq_close(mq);
 
+    mq_close(mq);
     }
-    else if (pid > 0){
-    wait(NULL);
+
+
+
+    else if (pid > 0){ // Parent (Receive)
+    char *token;
     char buf[MAX_SIZE];
-    mqd_t mq = mq_open(my_mq, O_RDONLY);
-
+    mqd_t mq = mq_open(my_mq, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH, &attr);
+    
     mq_receive(mq, buf, MAX_SIZE, NULL);
+    
     mq_close(mq);
-    mq_unlink(my_mq);
+    
+    token = strtok(buf, " ");
+    int count = 0;
 
-    char *token = strtok(buf, " ");
-    int i = 0;
     while (token != NULL)
     {
-         i++;
+         count++;
         token = strtok(NULL, " ");
     }
 
-    // count words in rcv
-    printf("%d\n", i);
+    printf("%d\n", count);
 
     }
- 
-
+    mq_unlink(my_mq);
 }
