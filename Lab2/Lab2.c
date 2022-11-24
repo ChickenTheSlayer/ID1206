@@ -12,8 +12,9 @@ void *thread_func() {
     counter= 0;
     for (counter; pthread_mutex_lock(&lock) || buffer < 15; counter++)
     {
-        buffer++;
         printf("TID: %lu, PID: %d, Buffer: %d\n", pthread_self(), getpid(), buffer);
+        buffer++;
+
         pthread_mutex_unlock(&lock);
         sleep(0.5);
     }
