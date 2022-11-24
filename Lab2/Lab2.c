@@ -1,12 +1,10 @@
-#include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
+#include <stdlib.h>
 #include <pthread.h>
+#include <unistd.h>
 
 int buffer = 0;
 pthread_mutex_t lock;
-
-
 
 void* thread_func() {
     {
