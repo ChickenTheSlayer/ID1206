@@ -16,8 +16,6 @@ void *thread_func() {
         printf("TID: %lu, PID: %d, Buffer: %d\n", pthread_self(), getpid(), buffer);
         pthread_mutex_unlock(&lock);
         sleep(0.5);
-
-
     }
     pthread_mutex_unlock(&lock);
     return (void *)counter;
