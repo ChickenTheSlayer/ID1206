@@ -17,6 +17,7 @@ void *thread_func() {
         pthread_mutex_unlock(&lock);
         sleep(0.5);
 
+
     }
     pthread_mutex_unlock(&lock);
     return (void *)counter;
@@ -30,9 +31,9 @@ int main()
 
     pthread_mutex_init(&lock, NULL);
 
-    pthread_create(&t1, NULL, &thread_func, NULL);
-    pthread_create(&t2, NULL, &thread_func, NULL);
-    pthread_create(&t3, NULL, &thread_func, NULL);
+    pthread_create(&t1, NULL, thread_func, NULL);
+    pthread_create(&t2, NULL, thread_func, NULL);
+    pthread_create(&t3, NULL, thread_func, NULL);
 
     pthread_join(t1, (void **)&count1);
     pthread_join(t2, (void **)&count2);
