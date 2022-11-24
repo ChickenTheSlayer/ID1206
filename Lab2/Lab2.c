@@ -6,8 +6,6 @@
 int buffer = 0;
 pthread_mutex_t lock;
 
-
-
 void *thread_func() {
 {
     void *counter;
@@ -26,23 +24,23 @@ void *thread_func() {
 }
 int main()
 {
-    pthread_t thread1, thread2, thread3;
+    pthread_t t1, t2, t3;
 
-    int thread1_count,thread2_count,thread3_count;
+    int count1,count2,count3;
 
     pthread_mutex_init(&lock, NULL);
 
-    pthread_create(&thread1, NULL, &thread_func, NULL);
-    pthread_create(&thread2, NULL, &thread_func, NULL);
-    pthread_create(&thread3, NULL, &thread_func, NULL);
+    pthread_create(&t1, NULL, &thread_func, NULL);
+    pthread_create(&t2, NULL, &thread_func, NULL);
+    pthread_create(&t3, NULL, &thread_func, NULL);
 
-    pthread_join(thread1, (void **)&thread1_count);
-    pthread_join(thread2, (void **)&thread2_count);
-    pthread_join(thread3, (void **)&thread3_count);
+    pthread_join(t1, (void **)&count1);
+    pthread_join(t2, (void **)&count2);
+    pthread_join(t3, (void **)&count3);
 
-    printf("TID %lu worked on the buffer %d times\n", thread1, thread1_count);
-    printf("TID %lu worked on the buffer %d times\n", thread2, thread2_count);
-    printf("TID %lu worked on the buffer %d times\n", thread3, thread3_count);
+    printf("TID %lu worked on the buffer %d times\n", t1, count1);
+    printf("TID %lu worked on the buffer %d times\n", t2, count2);
+    printf("TID %lu worked on the buffer %d times\n", t3, count3);
     printf("Total buffer access: %d", buffer);
     pthread_exit(NULL);
 
